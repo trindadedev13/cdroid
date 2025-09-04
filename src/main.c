@@ -1,14 +1,7 @@
-#include <android/log.h>
-#include <jni.h>
-
+#include "cdroid/activity.h"
 #include "cdroid/internal/j.h"
 #include "cdroid/internal/state.h"
-
-#ifndef LOGE
-// #define LOGE(fmt, ...) fprintf (stderr, fmt, ##__VA_ARGS__)
-#define LOGE(fmt, ...)                                                        \
-  __android_log_print (ANDROID_LOG_ERROR, "CDroid", fmt, ##__VA_ARGS__)
-#endif
+#include "cdroid/log.h"
 
 /**
  * this function is called when Native Libraries is loaded with
@@ -19,8 +12,6 @@
 j_int
 JNI_OnLoad (j_vm *jvm, void *__reserved__)
 {
-  /** we dont need to initiaze anything yet */
-  __state__.activity = NULL;
   __state__.jvm = jvm;
   return JNI_VERSION_1_6;
 }
@@ -28,17 +19,8 @@ JNI_OnLoad (j_vm *jvm, void *__reserved__)
 void
 JNI_UnLoad (j_vm *jvm, void *__reserved__)
 {
-  j_env env = NULL;
-  if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at JNI_UnLoad\n");
-      return;
-    }
-
-  j_delete_global_ref (&env, __state__.activity);
-
   __state__.jvm = NULL;
-  __state__.activity = NULL;
+  cdroid_activity_delete (&__state__.main_activity);
 }
 
 /**
@@ -48,9 +30,52 @@ JNI_UnLoad (j_vm *jvm, void *__reserved__)
  * @clazz    : The clazz ref to caller
  * @act      : The activity instance
  */
-J_EXPORT void J_CALL
-Java_cdroid_app_CDroid_init (j_env *env, j_class clazz, j_object ct)
+J_EXPORT j_int J_CALL
+Java_cdroid_app_CDroid_init (j_env *env, j_class clazz, j_object act,
+                             j_string lib_path, j_string fn_name)
 {
-  j_object c = j_new_global_ref (env, ct);
-  __state__.activity = c;
+  /** find android.app.Activity class ref */
+  j_class act_class = j_env_find_class (env, "android/app/Activity");
+  if (!act_class)
+    {
+      LOGE ("Failed to find android/app/Activity class at "
+            "%s\n",
+            __func__);
+      return -1;
+    }
+
+  /** create cdroid android activity */
+  if (cdroid_activity_new (&__state__.main_activity, act_class, act) != 0)
+    {
+      LOGE ("Failed to create main activity at %s\n", __func__);
+      return -1;
+    }
+
+  /** convert lib path java string to C Chars */
+  const char *lib_path_str = j_env_get_str_utf_chars (env, lib_path, NULL);
+  if (!lib_path_str)
+    {
+      LOGE ("Invalid library name provided. Please provided "
+            "a valid one.");
+    }
+
+  /** convert main fn name java string to C Chars */
+  const char *fn_name_str = j_env_get_str_utf_chars (env, fn_name, NULL);
+  if (!fn_name_str)
+    {
+      LOGE ("Invalid function name provided. Please "
+            "provided a valid one.");
+    }
+
+  /** load and call the main function based on input */
+  if (__cdroid_state_load_main__ (lib_path_str, fn_name_str) != 0)
+    {
+      LOGE ("Failed to run cdroid main at %s\n", __func__);
+      return -1;
+    }
+
+  /** release java strings */
+  j_env_release_str_utf_chars (env, lib_path, lib_path_str);
+  j_env_release_str_utf_chars (env, lib_path, fn_name_str);
+  return 0;
 }

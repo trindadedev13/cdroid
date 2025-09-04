@@ -1,10 +1,22 @@
 #include "cdroid/internal/state.h"
 
+#include <dlfcn.h>
+#include <unistd.h>
+
 #include "cdroid/internal/j.h"
+#include "cdroid/internal/types.h"
+#include "cdroid/log.h"
+
+typedef int (*cdroid_main_func) (int argc, char *argv[]);
 
 struct __cdroid_state__ __state__ = {};
 
-int
+/**
+ * Provides the JNIEnv instance or -1 if error.
+ *
+ * @param dest : The dest struct
+ */
+i8
 __cdroid_state_get_env__ (void **dest)
 {
   j_vm *v = __state__.jvm;
@@ -18,4 +30,52 @@ __cdroid_state_get_env__ (void **dest)
     }
   *dest = env;
   return 0;
+}
+
+/**
+ * Loads the main function from a shared object
+ *
+ * @param libPath : The path of shared object
+ * @param fnName  : The name of function inside shared object
+ */
+int
+__cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
+{
+  void *lib_hdl = dlopen (lib_path, RTLD_GLOBAL);
+  if (lib_hdl == NULL)
+    {
+      const char *lib_name = strrchr (lib_path, '/');
+      if (lib_name && *lib_name)
+        {
+          lib_name += 1;
+          lib_hdl = dlopen (lib_name, RTLD_GLOBAL);
+        }
+    }
+
+  if (!lib_hdl)
+    {
+      LOGE ("Failed to load library %s at %s\n", lib_path, __func__);
+      return -1;
+    }
+
+  cdroid_main_func fn = (cdroid_main_func)dlsym (lib_hdl, fn_name);
+  if (!fn)
+    {
+      LOGE ("Failed to load function %s at library %s at %s\n", fn_name,
+            lib_path, __func__);
+      return -1;
+    }
+
+  int argc = 1;
+  char *argv[] = { str_dup ("cdroid") };
+  int status = fn (argc, argv);
+  size_t i = 0;
+  for (; i < argc; ++i)
+    {
+      if (argv[i])
+        {
+          mem_free (argv[i]);
+        }
+    }
+  return status;
 }
