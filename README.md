@@ -1,10 +1,23 @@
 # CDroid
- - Create android apps with C.
+ - Create android apps with C. Built with C Ansi.
 
 ## References
  - [GNU C](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html)
  - [Android Developers](https://developer.android.com/)
  - [Oracle JNI Docs](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html)
+
+## Warning
+  There's no docs yet for this, you'll need use it by your own.  
+  If someone want do docs, and need help, join our community and i can help you.  
+  
+  Also not all android functions are available, if you need one, please open a issue.  
+
+## Available Views
+- [X] LinearLayout
+- [X] TextView
+- [ ] Button
+- [ ] ImageView
+...
 
 ## Building
   To Build CDroid you should use the `build.cr`  
