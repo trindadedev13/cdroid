@@ -3,20 +3,24 @@
 #include <cdroid/log.h>
 #include <cdroid/pub.h>
 #include <cdroid/textview.h>
+#include <cdroid/toast.h>
 #include <cdroid/view.h>
+
+struct cdroid_activity main_act = {0};
 
 void
 text_callback ()
 {
-  LOGD ("TextClicked");
+  struct cdroid_toast my;
+  cdroid_toast_new (&my, &main_act, "TextClicked", TOAST_DURATION_SHORT);
+  cdroid_toast_show (&my);
 }
 
 int
 main (int argc, char **argv)
 {
   /** get the main activity reference */
-  struct cdroid_activity act;
-  if (cdroid_pub_get_main_activity (&act) != 0)
+  if (cdroid_pub_get_main_activity (&main_act) != 0)
     {
       LOGE ("Something wrong with the main activity at %s, "
             "closing...\n",
@@ -26,7 +30,7 @@ main (int argc, char **argv)
 
   /** creates new linearlayout */
   struct cdroid_view content;
-  if (cdroid_linearlayout_new (&content, &act) != 0)
+  if (cdroid_linearlayout_new (&content, &main_act) != 0)
     {
       LOGE ("Failed to create linearlayout at %s\n", __func__);
       return -1;
@@ -42,7 +46,7 @@ main (int argc, char **argv)
 
   /** creates a new textview */
   struct cdroid_view tv;
-  if (cdroid_textview_new (&tv, &act) != 0)
+  if (cdroid_textview_new (&tv, &main_act) != 0)
     {
       LOGE ("Failed to create textview at %s\n", __func__);
       return -1;
@@ -68,7 +72,7 @@ main (int argc, char **argv)
     }
 
   /** defines activity content */
-  if (cdroid_activity_set_contentview (&act, &content) != 0)
+  if (cdroid_activity_set_contentview (&main_act, &content) != 0)
     {
       LOGE ("Failed to set MainActivity content view at %s\n", __func__);
       return -1;

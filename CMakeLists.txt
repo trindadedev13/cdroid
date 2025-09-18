@@ -12,6 +12,7 @@ set (SOURCES
      src/pub.c
      src/state.c
      src/textview.c
+     src/toast.c
      src/view.c
      src/viewhelper.c)
 

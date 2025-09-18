@@ -15,6 +15,7 @@
 ## Available Views
 - [X] LinearLayout
 - [X] TextView
+- [X] Toast
 - [ ] Button
 - [ ] ImageView
 ...
