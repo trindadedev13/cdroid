@@ -57,6 +57,7 @@ Java_cdroid_app_CDroid_init (j_env *env, j_class clazz, j_object act,
     {
       LOGE ("Invalid library name provided. Please provided "
             "a valid one.");
+      return -1;
     }
 
   /** convert main fn name java string to C Chars */
@@ -65,6 +66,7 @@ Java_cdroid_app_CDroid_init (j_env *env, j_class clazz, j_object act,
     {
       LOGE ("Invalid function name provided. Please "
             "provided a valid one.");
+      return -1;
     }
 
   /** load and call the main function based on input */
