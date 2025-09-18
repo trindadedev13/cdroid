@@ -62,9 +62,9 @@ end
 if op_fmt
   folders = [
     "src",
+    "src/java/cdroid/app",
     "include/cdroid",
     "include/cdroid/internal",
-    "android/app/src/main/java/cdroid/app",
     "example/src",
   ]
   exts = [".c", ".h", ".java"]
