@@ -16,7 +16,8 @@ struct cdroid_toast
   j_object instance;
 };
 
-i8 cdroid_toast_new (struct cdroid_toast *, struct cdroid_activity *, const char *, i8);
+i8 cdroid_toast_new (struct cdroid_toast *, struct cdroid_activity *,
+                     const char *, i8);
 i8 cdroid_toast_show (struct cdroid_toast *);
 
 CDROID_HEADER_END

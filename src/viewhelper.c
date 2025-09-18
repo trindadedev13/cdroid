@@ -58,8 +58,8 @@ __cdroid_viewhelper_create_click_listener__ (j_object ptr, j_object *dest)
    * calls cdroid.app.ViewHelper#createClickListener(cdroid.app.Pointer)
    * passing the view and pointer
    */
-  j_object listener
-      = j_env_call_static_object_method (env, __state__.__viewhelper_clazz__, m_id, ptr);
+  j_object listener = j_env_call_static_object_method (
+      env, __state__.__viewhelper_clazz__, m_id, ptr);
   if (!listener)
     {
       LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);

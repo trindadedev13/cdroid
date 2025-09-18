@@ -6,7 +6,7 @@
 #include <cdroid/toast.h>
 #include <cdroid/view.h>
 
-struct cdroid_activity main_act = {0};
+struct cdroid_activity main_act = { 0 };
 
 void
 text_callback ()

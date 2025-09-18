@@ -1,10 +1,10 @@
 #include "cdroid/toast.h"
 
 #include "cdroid/activity.h"
-#include "cdroid/log.h"
 #include "cdroid/internal/j.h"
 #include "cdroid/internal/state.h"
 #include "cdroid/internal/types.h"
+#include "cdroid/log.h"
 
 static i8
 __cdroid_check_clazz__ (j_env *env)
@@ -25,7 +25,7 @@ __cdroid_check_clazz__ (j_env *env)
 }
 
 /**
- * Makes a Toast Message instance. 
+ * Makes a Toast Message instance.
  *
  * @param dest     : Toast dest struct data
  * @param act      : The activity to show toast
@@ -33,7 +33,8 @@ __cdroid_check_clazz__ (j_env *env)
  * @param duration : The duration of toast, see TOAST_DURATION_* macros.
  */
 i8
-cdroid_toast_new (struct cdroid_toast *dest, struct cdroid_activity *act, const char *msg, i8 duration)
+cdroid_toast_new (struct cdroid_toast *dest, struct cdroid_activity *act,
+                  const char *msg, i8 duration)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
@@ -45,19 +46,23 @@ cdroid_toast_new (struct cdroid_toast *dest, struct cdroid_activity *act, const 
   if (__cdroid_check_clazz__ (env) != 0)
     return -1;
 
-  /** get android.widget.Toast#makeText(android.content.Context, java.lang.CharSequence, int) */
-  j_method_id m_id = j_env_get_static_method_id (
-      env, __state__.__toast_clazz__, "makeText",
-      "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;");
+  /** get android.widget.Toast#makeText(android.content.Context,
+   * java.lang.CharSequence, int) */
+  j_method_id m_id
+      = j_env_get_static_method_id (env, __state__.__toast_clazz__, "makeText",
+                                    "(Landroid/content/Context;Ljava/lang/"
+                                    "CharSequence;I)Landroid/widget/Toast;");
   if (!m_id)
     {
-      LOGE ("Failed to get Toast#makeText(android.content.Context, java.lang.CharSequence, int) "
+      LOGE ("Failed to get Toast#makeText(android.content.Context, "
+            "java.lang.CharSequence, int) "
             "method id.\n");
       return -1;
     }
 
   j_string java_msg = j_env_new_string_utf (env, msg);
-  j_object ins = j_env_call_static_object_method (env, __state__.__toast_clazz__, m_id, act->instance, java_msg, duration);
+  j_object ins = j_env_call_static_object_method (
+      env, __state__.__toast_clazz__, m_id, act->instance, java_msg, duration);
   if (!ins)
     {
       LOGE ("Failed to create Toast at %s.\n", __func__);
@@ -82,7 +87,8 @@ cdroid_toast_show (struct cdroid_toast *self)
     return -1;
 
   /** get android.widget.Toast#show() */
-  j_method_id m_id = j_env_get_method_id (env, __state__.__toast_clazz__, "show", "()V");
+  j_method_id m_id
+      = j_env_get_method_id (env, __state__.__toast_clazz__, "show", "()V");
   if (!m_id)
     {
       LOGE ("Failed to get Toast#show() method id.\n");

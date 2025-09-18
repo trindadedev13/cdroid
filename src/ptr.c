@@ -54,8 +54,9 @@ __cdroid_ptr_new__ (uiptr raw, i8 is_fn, j_object *dest)
       return -1;
     }
 
-  j_object ins = j_env_new_object (env, __state__.__ptr_clazz__, con, (j_long)raw,
-                                   (is_fn == 0) ? JNI_TRUE : JNI_FALSE);
+  j_object ins
+      = j_env_new_object (env, __state__.__ptr_clazz__, con, (j_long)raw,
+                          (is_fn == 0) ? JNI_TRUE : JNI_FALSE);
   if (!ins)
     {
       LOGE ("Failed to instanciate Pointer at %s\n", __func__);
@@ -78,7 +79,8 @@ CDROID_JAVA (Pointer, nativeCall) (j_env *env, j_object instance)
     return -1;
 
   /** get cdroid.app.Pointer#getRaw(): long */
-  j_method_id m_id = j_env_get_method_id (env, __state__.__ptr_clazz__, "getRaw", "()J");
+  j_method_id m_id
+      = j_env_get_method_id (env, __state__.__ptr_clazz__, "getRaw", "()J");
   if (!m_id)
     {
       LOGE ("Failed to get nativeCall() method id.\n");
@@ -86,7 +88,7 @@ CDROID_JAVA (Pointer, nativeCall) (j_env *env, j_object instance)
     }
 
   j_long jraw = j_env_call_long_method (env, instance, m_id);
-  if (jraw == 0/**|| (jraw & 0xF) != 0*/)
+  if (jraw == 0)
     {
       LOGD ("Invalid pointer at address: 0x%lx\n", (uiptr)jraw);
       return -1;
