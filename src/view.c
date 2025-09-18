@@ -94,6 +94,10 @@ cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
    * passing the content instance
    */
   j_env_call_void_method (env, self->instance, m_id, child->instance);
+
+  LOGD ("Added %s at %s.\n", cdroid_view_type_tostr (child->type),
+        cdroid_view_type_tostr (self->type));
+
   return 0;
 }
 

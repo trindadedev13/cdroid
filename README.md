@@ -19,30 +19,25 @@
 - [ ] ImageView
 ...
 
-## Building
-  To Build CDroid you should use the `build.cr`  
+## 🚀 Getting Started
 
-### Library
+To get a local copy up and running, follow these simple steps.
 
-- Build library:  
-    ```bash
-    crystal run build.rb -- --build
-    ```  
+### Prerequisites
 
-- Build library and example:  
-    ```bash
-    crystal run build.rb -- --build --example
-    ```  
+- Android Studio
+- Android SDK 24 or newer.
+- Android NDK 27b or newer.
 
-### Android APK (wip)
- - Well, to build the apk it's more nhe boring  
+### Installation
 
-- First Build library, example and prepare files to build apk:  
-    ```bash
-    crystal run build.rb -- --build --example --prepare
-    ```
-- Now we should build the apk in android folder  
-  I Use AIDE Mobile to run it, i don't how you can do it in your device for now.  
+1. Clone the repo
+   ```sh
+   git clone https://github.com/trindadedev13/CDroid.git
+   ```
+2. Open the project in Android Studio.
+3. Let Gradle sync and download the required dependencies.
+4. Run the app on an emulator or a physical device.
 
 ## Community
 [![Join our Discord server!](https://invidget.switchblade.xyz/5hSStgYfru)](https://discord.gg/5hSStgYfru)

@@ -31,8 +31,8 @@ JNI_UnLoad (j_vm *jvm, void *__reserved__)
  * @act      : The activity instance
  */
 J_EXPORT j_int J_CALL
-Java_cdroid_app_CDroid_init (j_env *env, j_class clazz, j_object act,
-                             j_string lib_path, j_string fn_name)
+CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
+                                  j_string lib_path, j_string fn_name)
 {
   /** find android.app.Activity class ref */
   j_class act_class = j_env_find_class (env, "android/app/Activity");
