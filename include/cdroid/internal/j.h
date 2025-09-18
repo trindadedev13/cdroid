@@ -59,6 +59,11 @@ CDROID_HEADER_BEGIN
 #define j_vm_attach_current_thread(jvm, penv, args)                           \
   (*jvm)->AttachCurrentThread (jvm, penv, args)
 
+#define CDROID_JAVA_PREFIX               cdroid_app
+#define CONCAT2(prefix, class, function) CONCAT1(prefix, class, function)
+#define CONCAT1(prefix, class, function) Java_##prefix##_##class##_##function
+#define CDROID_JAVA(class, function)     CONCAT2(CDROID_JAVA_PREFIX, class, function)
+
 CDROID_HEADER_END
 
 #endif

@@ -73,7 +73,7 @@ __cdroid_ptr_new__ (uiptr raw, i8 is_fn, j_object *dest)
  * @param self : The pointer java object
  */
 J_EXPORT j_int J_CALL
-Java_cdroid_app_Pointer_nativeCall (j_env *env, j_object instance)
+CDROID_JAVA (Pointer, nativeCall) (j_env *env, j_object instance)
 {
   if (__cdroid_check_clazz__ (env) != 0)
     return -1;
