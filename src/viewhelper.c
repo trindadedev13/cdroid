@@ -5,12 +5,10 @@
 #include "cdroid/internal/types.h"
 #include "cdroid/log.h"
 
-static j_class __viewhelper_clazz__ = NULL;
-
 static i8
 __cdroid_check_clazz__ (j_env *env)
 {
-  if (!__viewhelper_clazz__)
+  if (!__state__.__viewhelper_clazz__)
     {
       /** get ViewHelper class ref */
       j_class clazz = j_env_find_class (env, "cdroid/app/ViewHelper");
@@ -19,7 +17,8 @@ __cdroid_check_clazz__ (j_env *env)
           LOGE ("Failed to get ViewHelper Class at %s\n", __func__);
           return -1;
         }
-      __viewhelper_clazz__ = clazz;
+      __state__.__viewhelper_clazz__ = j_env_new_global_ref (env, clazz);
+      j_env_delete_local_ref (env, clazz);
     }
   return 0;
 }
@@ -46,7 +45,7 @@ __cdroid_viewhelper_create_click_listener__ (j_object ptr, j_object *dest)
 
   /** get cdroid.app.ViewHelper#createClickListener(cdroid.app.Pointer) */
   j_method_id m_id = j_env_get_static_method_id (
-      env, __viewhelper_clazz__, "createClickListener",
+      env, __state__.__viewhelper_clazz__, "createClickListener",
       "(Lcdroid/app/Pointer;)Landroid/view/View$OnClickListener;");
   if (!m_id)
     {
@@ -60,12 +59,12 @@ __cdroid_viewhelper_create_click_listener__ (j_object ptr, j_object *dest)
    * passing the view and pointer
    */
   j_object listener
-      = j_env_call_static_object_method (env, __viewhelper_clazz__, m_id, ptr);
+      = j_env_call_static_object_method (env, __state__.__viewhelper_clazz__, m_id, ptr);
   if (!listener)
     {
       LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
       return -1;
     }
-  *dest = listener;
+  *dest = j_env_new_global_ref (env, listener);
   return 0;
 }

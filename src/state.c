@@ -3,6 +3,7 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
+#include "cdroid/activity.h"
 #include "cdroid/internal/j.h"
 #include "cdroid/internal/types.h"
 #include "cdroid/log.h"
@@ -78,4 +79,24 @@ __cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
         }
     }
   return status;
+}
+
+i8
+__cdroid_state_delete__ ()
+{
+  j_env *env = NULL;
+  if (__cdroid_state_get_env__ ((void **)&env) != 0)
+    {
+      LOGE ("Failed to get env at %s\n", __func__);
+      return -1;
+    }
+
+  __state__.jvm = NULL;
+  cdroid_activity_delete (&__state__.main_activity);
+
+  j_env_delete_global_ref (env, __state__.__ptr_clazz__);
+  j_env_delete_global_ref (env, __state__.__viewhelper_clazz__);
+  j_env_delete_global_ref (env, __state__.__toast_clazz__);
+
+  return 0;
 }

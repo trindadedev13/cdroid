@@ -5,12 +5,10 @@
 #include "cdroid/internal/types.h"
 #include "cdroid/log.h"
 
-static j_class __ptr_clazz__ = NULL;
-
 static i8
 __cdroid_check_clazz__ (j_env *env)
 {
-  if (!__ptr_clazz__)
+  if (!__state__.__ptr_clazz__)
     {
       /** get Pointer class ref */
       j_class clazz = j_env_find_class (env, "cdroid/app/Pointer");
@@ -19,7 +17,8 @@ __cdroid_check_clazz__ (j_env *env)
           LOGE ("Failed to get Pointer Class at %s\n", __func__);
           return -1;
         }
-      __ptr_clazz__ = clazz;
+      __state__.__ptr_clazz__ = j_env_new_global_ref (env, clazz);
+      j_env_delete_local_ref (env, clazz);
     }
   return 0;
 }
@@ -46,7 +45,7 @@ __cdroid_ptr_new__ (uiptr raw, i8 is_fn, j_object *dest)
 
   /** call Pointer class constructor */
   j_method_id con
-      = j_env_get_method_id (env, __ptr_clazz__, "<init>", "(JZ)V");
+      = j_env_get_method_id (env, __state__.__ptr_clazz__, "<init>", "(JZ)V");
   if (!con)
     {
       LOGE ("Failed to get Pointer Class Constructor "
@@ -55,7 +54,7 @@ __cdroid_ptr_new__ (uiptr raw, i8 is_fn, j_object *dest)
       return -1;
     }
 
-  j_object ins = j_env_new_object (env, __ptr_clazz__, con, (j_long)raw,
+  j_object ins = j_env_new_object (env, __state__.__ptr_clazz__, con, (j_long)raw,
                                    (is_fn == 0) ? JNI_TRUE : JNI_FALSE);
   if (!ins)
     {
@@ -63,7 +62,7 @@ __cdroid_ptr_new__ (uiptr raw, i8 is_fn, j_object *dest)
       return -1;
     }
 
-  *dest = ins;
+  *dest = j_env_new_global_ref (env, ins);
   return 0;
 }
 
@@ -79,7 +78,7 @@ CDROID_JAVA (Pointer, nativeCall) (j_env *env, j_object instance)
     return -1;
 
   /** get cdroid.app.Pointer#getRaw(): long */
-  j_method_id m_id = j_env_get_method_id (env, __ptr_clazz__, "getRaw", "()J");
+  j_method_id m_id = j_env_get_method_id (env, __state__.__ptr_clazz__, "getRaw", "()J");
   if (!m_id)
     {
       LOGE ("Failed to get nativeCall() method id.\n");
@@ -87,7 +86,7 @@ CDROID_JAVA (Pointer, nativeCall) (j_env *env, j_object instance)
     }
 
   j_long jraw = j_env_call_long_method (env, instance, m_id);
-  if (jraw == 0 || (jraw & 0xF) != 0)
+  if (jraw == 0/**|| (jraw & 0xF) != 0*/)
     {
       LOGD ("Invalid pointer at address: 0x%lx\n", (uiptr)jraw);
       return -1;

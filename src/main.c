@@ -19,8 +19,7 @@ JNI_OnLoad (j_vm *jvm, void *__reserved__)
 void
 JNI_UnLoad (j_vm *jvm, void *__reserved__)
 {
-  __state__.jvm = NULL;
-  cdroid_activity_delete (&__state__.main_activity);
+  __cdroid_state_delete__ ();
 }
 
 /**
