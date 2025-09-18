@@ -18,7 +18,7 @@ cdroid_view_type_tostr (enum cdroid_view_type type)
     case VIEW_TEXT:
       return "TextView";
     case VIEW_LINEARLAYOUT:
-      return "TextView";
+      return "LinearLayout";
     default:
       return "Unknown View";
     };
@@ -51,7 +51,7 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
       return -1;
     }
 
-  j_bool res = j_env_is_instanceof (env, v, self->instance);
+  j_bool res = j_env_is_instanceof (env, self->instance, v);
   return (res == J_TRUE) ? 0 : -1;
 }
 
