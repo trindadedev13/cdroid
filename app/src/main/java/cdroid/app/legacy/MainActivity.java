@@ -1,4 +1,4 @@
-package cdroid.app;
+package cdroid.app.legacy;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ public class MainActivity extends Activity
     super.onCreate (savedInstanceState);
     final String libPath = getApplicationInfo ().nativeLibraryDir + "/"
                            + "libcdroid_main.so";
-    int res = Main.nativeInit (
+    int res = CDroid.nativeInit (
         /** activity = */
         this,
         /** libPath  = */

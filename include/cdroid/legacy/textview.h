@@ -1,14 +1,14 @@
-#ifndef __cdroid_textview_h__
-#define __cdroid_textview_h__
+#ifndef __cdroid_legacy_textview_h__
+#define __cdroid_legacy_textview_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
-#include "cdroid/internal/j.h"
+#include "cdroid/legacy/internal/j.h"
 
-#include "cdroid/activity.h"
-#include "cdroid/view.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/view.h"
 
 /** we don't need to store any textview-only data */
 struct __cdroid_textview__;

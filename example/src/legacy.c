@@ -1,10 +1,10 @@
-#include <cdroid/activity.h>
-#include <cdroid/linearlayout.h>
-#include <cdroid/log.h>
-#include <cdroid/pub.h>
-#include <cdroid/textview.h>
-#include <cdroid/toast.h>
-#include <cdroid/view.h>
+#include <cdroid/legacy/activity.h>
+#include <cdroid/legacy/linearlayout.h>
+#include <cdroid/legacy/log.h>
+#include <cdroid/legacy/pub.h>
+#include <cdroid/legacy/textview.h>
+#include <cdroid/legacy/toast.h>
+#include <cdroid/legacy/view.h>
 
 struct cdroid_activity main_act = { 0 };
 
@@ -19,6 +19,10 @@ text_callback ()
 int
 main (int argc, char **argv)
 {
+
+  /** to use legacy, we need tell the cdroid to use call legacy init too */
+  cdroid_pub_legacy_init ();
+
   /** get the main activity reference */
   if (cdroid_pub_get_main_activity (&main_act) != 0)
     {

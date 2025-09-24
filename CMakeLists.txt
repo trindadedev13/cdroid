@@ -3,18 +3,20 @@ cmake_minimum_required (VERSION 3.22)
 project (cdroid)
 
 set (CMAKE_C_STANDARD 90)
+set (CMAKE_CXX_STANDARD 98)
 
 set (SOURCES
-     src/activity.c
-     src/linearlayout.c
-     src/main.c
-     src/ptr.c
-     src/pub.c
-     src/state.c
-     src/textview.c
-     src/toast.c
-     src/view.c
-     src/viewhelper.c)
+     src/Main.cpp
+     src/legacy/activity.c
+     src/legacy/linearlayout.c
+     src/legacy/main.c
+     src/legacy/ptr.c
+     src/legacy/pub.c
+     src/legacy/state.c
+     src/legacy/textview.c
+     src/legacy/toast.c
+     src/legacy/view.c
+     src/legacy/viewhelper.c)
 
 set( HEADERS)
 

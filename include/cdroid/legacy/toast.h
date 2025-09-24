@@ -1,12 +1,12 @@
-#ifndef __cdroid_toast_h__
-#define __cdroid_toast_h__
+#ifndef __cdroid_legacy_toast_h__
+#define __cdroid_legacy_toast_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
-#include "cdroid/activity.h"
-#include "cdroid/internal/j.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/j.h"
 
 #define TOAST_DURATION_SHORT 0x00000000
 #define TOAST_DURATION_LONG 0x00000001

@@ -1,9 +1,8 @@
-package cdroid.app;
+package cdroid.app.legacy;
 
 import android.app.Activity;
-import android.app.Application;
 
-public class CDroid extends Application
+public class CDroid
 {
   static { System.loadLibrary ("cdroid"); }
 

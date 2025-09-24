@@ -1,14 +1,14 @@
-#ifndef __cdroid_linearlayout_h__
-#define __cdroid_linearlayout_h__
+#ifndef __cdroid_legacy_linearlayout_h__
+#define __cdroid_legacy_linearlayout_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
-#include "cdroid/internal/j.h"
+#include "cdroid/legacy/internal/j.h"
 
-#include "cdroid/activity.h"
-#include "cdroid/view.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/view.h"
 
 #define ORIENTATION_HORIZONTAL 0x00000000
 #define ORIENTATION_VERTICAL 0x00000001

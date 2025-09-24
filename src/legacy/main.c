@@ -1,7 +1,7 @@
-#include "cdroid/activity.h"
-#include "cdroid/internal/j.h"
-#include "cdroid/internal/state.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/j.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/log.h"
 
 /**
  * this function is called when Native Libraries is loaded with
@@ -10,14 +10,14 @@
  * native lib
  */
 j_int
-JNI_OnLoad (j_vm *jvm, void *__reserved__)
+__cdroid_legacy_jni_on_load__ (j_vm *jvm, void *__reserved__)
 {
   __state__.jvm = jvm;
   return JNI_VERSION_1_6;
 }
 
 void
-JNI_UnLoad (j_vm *jvm, void *__reserved__)
+__cdroid_legacy_jni_on_unload__ (j_vm *jvm, void *__reserved__)
 {
   __cdroid_state_delete__ ();
 }

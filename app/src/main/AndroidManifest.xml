@@ -6,7 +6,6 @@
     android:icon="@mipmap/ic_launcher"
     android:roundIcon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:name="cdroid.app.CDroid"
     android:theme="@style/AppTheme"
     android:supportsRtl="true">
     <activity

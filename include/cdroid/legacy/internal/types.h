@@ -1,5 +1,5 @@
-#ifndef __cdroid_types_h__
-#define __cdroid_types_h__
+#ifndef __cdroid_legacy_types_h__
+#define __cdroid_legacy_types_h__
 
 #ifdef __cplusplus
 #define CDROID_HEADER_BEGIN                                                   \

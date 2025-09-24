@@ -1,5 +1,9 @@
-#ifndef __cdroid_log_h__
-#define __cdroid_log_h__
+#ifndef __cdroid_legacy_log_h__
+#define __cdroid_legacy_log_h__
+
+#include "cdroid/legacy/internal/types.h"
+
+CDROID_HEADER_BEGIN
 
 #include <android/log.h>
 
@@ -17,5 +21,7 @@
 #define LOGI(fmt, ...)                                                        \
   __android_log_print (ANDROID_LOG_INFO, "CDroid", fmt, ##__VA_ARGS__)
 #endif
+
+CDROID_HEADER_END
 
 #endif

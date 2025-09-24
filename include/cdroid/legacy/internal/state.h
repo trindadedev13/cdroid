@@ -1,12 +1,12 @@
-#ifndef __cdroid_internal_state_h__
-#define __cdroid_internal_state_h__
+#ifndef __cdroid_legacy_internal_state_h__
+#define __cdroid_legacy_internal_state_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
-#include "cdroid/activity.h"
-#include "cdroid/internal/j.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/j.h"
 
 struct __cdroid_state__
 {
