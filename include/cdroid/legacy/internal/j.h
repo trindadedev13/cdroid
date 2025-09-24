@@ -1,7 +1,7 @@
-#ifndef __cdroid_internal_j_h__
-#define __cdroid_internal_j_h__
+#ifndef __cdroid_legacy_internal_j_h__
+#define __cdroid_legacy_internal_j_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
@@ -59,7 +59,7 @@ CDROID_HEADER_BEGIN
 #define j_vm_attach_current_thread(jvm, penv, args)                           \
   (*jvm)->AttachCurrentThread (jvm, penv, args)
 
-#define CDROID_JAVA_PREFIX cdroid_app
+#define CDROID_JAVA_PREFIX cdroid_app_legacy
 #define CONCAT2(prefix, class, function) CONCAT1 (prefix, class, function)
 #define CONCAT1(prefix, class, function) Java_##prefix##_##class##_##function
 #define CDROID_JAVA(class, function)                                          \

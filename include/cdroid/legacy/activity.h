@@ -1,13 +1,13 @@
-#ifndef __cdroid_activity_h__
-#define __cdroid_activity_h__
+#ifndef __cdroid_legacy_activity_h__
+#define __cdroid_legacy_activity_h__
 
-#include "cdroid/internal/types.h"
+#include "cdroid/legacy/internal/types.h"
 
 CDROID_HEADER_BEGIN
 
-#include "cdroid/internal/j.h"
+#include "cdroid/legacy/internal/j.h"
 
-#include "cdroid/view.h"
+#include "cdroid/legacy/view.h"
 
 struct cdroid_activity
 {

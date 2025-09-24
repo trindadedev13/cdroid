@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 project(cdroid_example)
 
 set(SOURCES
-    src/main.c)
+    src/legacy.c)
 
 set(HEADERS)
 

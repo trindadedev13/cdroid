@@ -1,9 +1,9 @@
-#include "cdroid/view.h"
+#include "cdroid/legacy/view.h"
 
-#include "cdroid/internal/ptr.h"
-#include "cdroid/internal/state.h"
-#include "cdroid/internal/viewhelper.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/internal/ptr.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/internal/viewhelper.h"
+#include "cdroid/legacy/log.h"
 
 /**
  * Returns the string value of type enum
@@ -145,7 +145,7 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
                              "(Landroid/view/View$OnClickListener;)V");
   if (!m_id)
     {
-      LOGE ("Failed to get setOnClickListener(cdroid/app/View) "
+      LOGE ("Failed to get setOnClickListener(cdroid/legacy/app/View) "
             "method id.\n");
       return -1;
     }

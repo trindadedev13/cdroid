@@ -1,12 +1,12 @@
-#include "cdroid/internal/state.h"
+#include "cdroid/legacy/internal/state.h"
 
 #include <dlfcn.h>
 #include <unistd.h>
 
-#include "cdroid/activity.h"
-#include "cdroid/internal/j.h"
-#include "cdroid/internal/types.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/j.h"
+#include "cdroid/legacy/internal/types.h"
+#include "cdroid/legacy/log.h"
 
 typedef int (*cdroid_main_func) (int argc, char *argv[]);
 

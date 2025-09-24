@@ -1,7 +1,7 @@
-#include "cdroid/activity.h"
+#include "cdroid/legacy/activity.h"
 
-#include "cdroid/internal/state.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/log.h"
 
 /**
  * Creates a new activity from a class ref and instance.

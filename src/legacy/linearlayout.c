@@ -1,10 +1,10 @@
-#include "cdroid/linearlayout.h"
+#include "cdroid/legacy/linearlayout.h"
 
-#include "cdroid/activity.h"
-#include "cdroid/internal/j.h"
-#include "cdroid/internal/state.h"
-#include "cdroid/internal/types.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/j.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/internal/types.h"
+#include "cdroid/legacy/log.h"
 
 /**
  * Creates a new linearlayout instance

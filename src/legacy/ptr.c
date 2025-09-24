@@ -1,9 +1,9 @@
-#include "cdroid/internal/ptr.h"
+#include "cdroid/legacy/internal/ptr.h"
 
-#include "cdroid/internal/j.h"
-#include "cdroid/internal/state.h"
-#include "cdroid/internal/types.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/internal/j.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/internal/types.h"
+#include "cdroid/legacy/log.h"
 
 static i8
 __cdroid_check_clazz__ (j_env *env)
@@ -11,7 +11,7 @@ __cdroid_check_clazz__ (j_env *env)
   if (!__state__.__ptr_clazz__)
     {
       /** get Pointer class ref */
-      j_class clazz = j_env_find_class (env, "cdroid/app/Pointer");
+      j_class clazz = j_env_find_class (env, "cdroid/app/legacy/Pointer");
       if (!clazz)
         {
           LOGE ("Failed to get Pointer Class at %s\n", __func__);

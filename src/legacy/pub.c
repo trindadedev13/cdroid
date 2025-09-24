@@ -1,8 +1,8 @@
-#include "cdroid/pub.h"
+#include "cdroid/legacy/pub.h"
 
-#include "cdroid/activity.h"
-#include "cdroid/internal/state.h"
-#include "cdroid/log.h"
+#include "cdroid/legacy/activity.h"
+#include "cdroid/legacy/internal/state.h"
+#include "cdroid/legacy/log.h"
 
 /**
  * Provides the main activity instance.
@@ -32,4 +32,10 @@ cdroid_pub_get_main_activity (struct cdroid_activity *dest)
     }
   *dest = __state__.main_activity;
   return r;
+}
+
+i8
+cdroid_pub_legacy_init ()
+{
+  return 0;
 }
