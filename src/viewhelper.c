@@ -1,5 +1,6 @@
 #include "cdroid/internal/viewhelper.h"
 
+#include "cdroid/internal/callback.h"
 #include "cdroid/internal/j.h"
 #include "cdroid/internal/state.h"
 #include "cdroid/internal/types.h"
@@ -26,12 +27,11 @@ __cdroid_check_clazz__ (j_env *env)
 /**
  * Creates a View.OnClickListener instance.
  *
- * @param ptr  : The java Pointer class instance, it store the pointer for the
- * click fn.
- * @patam dest : The new View.OnClickListener mem dest.
+ * @param callback : The callback ptr
+ * @patam dest     : The new View.OnClickListener mem dest.
  */
 i8
-__cdroid_viewhelper_create_click_listener__ (j_object ptr, j_object *dest)
+__cdroid_viewhelper_create_click_listener__ (struct __cdroid_callback_node__ *callback, j_object *dest)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
@@ -43,28 +43,31 @@ __cdroid_viewhelper_create_click_listener__ (j_object ptr, j_object *dest)
   if (__cdroid_check_clazz__ (env) != 0)
     return -1;
 
-  /** get cdroid.app.ViewHelper#createClickListener(cdroid.app.Pointer) */
+  /** get cdroid.app.ViewHelper#createClickListener(long) */
   j_method_id m_id = j_env_get_static_method_id (
       env, __state__.__viewhelper_clazz__, "createClickListener",
-      "(Lcdroid/app/Pointer;)Landroid/view/View$OnClickListener;");
+      "(J)Landroid/view/View$OnClickListener;");
   if (!m_id)
     {
-      LOGE ("Failed to get createClickListener(cdroid/app/View) "
+      LOGE ("Failed to get createClickListener(long) "
             "method id.\n");
       return -1;
     }
 
+  j_long callback_ptr = (j_long)(uiptr)callback;
+
   /**
-   * calls cdroid.app.ViewHelper#createClickListener(cdroid.app.Pointer)
+   * calls cdroid.app.ViewHelper#createClickListener(long)
    * passing the view and pointer
    */
   j_object listener = j_env_call_static_object_method (
-      env, __state__.__viewhelper_clazz__, m_id, ptr);
+      env, __state__.__viewhelper_clazz__, m_id, callback_ptr);
   if (!listener)
     {
       LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
       return -1;
     }
   *dest = j_env_new_global_ref (env, listener);
+  j_env_delete_local_ref (env, listener);
   return 0;
 }

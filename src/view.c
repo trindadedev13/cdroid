@@ -1,6 +1,5 @@
 #include "cdroid/view.h"
 
-#include "cdroid/internal/ptr.h"
 #include "cdroid/internal/state.h"
 #include "cdroid/internal/viewhelper.h"
 #include "cdroid/log.h"
@@ -105,12 +104,13 @@ cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
  * Defines the click event listener of a view.
  *
  *
- * @param self     : The view
- * @param listener : The code to be executed (callback)
+ * @param self  : The view
+ * @param fn    : The function to be executed (callback)
+ * @param udata : User data
  */
 i8
 cdroid_view_set_click_listener (struct cdroid_view *self,
-                                cdroid_view_click_listener listener)
+                                __cdroid_callback_fn__ fn, void *udata)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
@@ -119,18 +119,11 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
       return -1;
     }
 
-  /** here we create View.OnClickListener */
-  j_object ptr = NULL;
-  uiptr c_ptr = (uiptr)listener;
-
-  if (__cdroid_ptr_new__ (c_ptr, 0, &ptr) != 0)
-    {
-      LOGE ("Failed to create Java Pointer at %s.\n", __func__);
-      return -1;
-    }
+  struct __cdroid_callback_node__ *node;
+  __cdroid_callback_node_register__ (fn, udata, &node);
 
   j_object j_listener = NULL;
-  if (__cdroid_viewhelper_create_click_listener__ (ptr, &j_listener) != 0)
+  if (__cdroid_viewhelper_create_click_listener__ (node, &j_listener) != 0)
     {
       LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
       return -1;

@@ -9,4 +9,7 @@ public class CDroid extends Application
 
   public static final native int
   nativeInit (final Activity c, final String libPath, final String fnName);
+
+  public static final native void
+  nativeCall (final long callbackPtr);
 }

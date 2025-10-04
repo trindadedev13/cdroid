@@ -5,6 +5,7 @@
 
 CDROID_HEADER_BEGIN
 
+#include "cdroid/internal/callback.h"
 #include "cdroid/internal/j.h"
 
 #include "cdroid/view.h"
@@ -26,15 +27,12 @@ struct cdroid_view
   void *__special__;
 };
 
-/** TODO: Add support for sharing data */
-typedef void (*cdroid_view_click_listener) (void);
-
 const char *cdroid_view_type_tostr (enum cdroid_view_type);
 
 i8 cdroid_view_is_viewgroup (struct cdroid_view *);
 i8 cdroid_view_add_view (struct cdroid_view *, struct cdroid_view *);
 i8 cdroid_view_set_click_listener (struct cdroid_view *,
-                                   cdroid_view_click_listener);
+                                   __cdroid_callback_fn__, void *);
 
 CDROID_HEADER_END
 

@@ -6,9 +6,9 @@ set (CMAKE_C_STANDARD 90)
 
 set (SOURCES
      src/activity.c
+     src/callback.c
      src/linearlayout.c
      src/main.c
-     src/ptr.c
      src/pub.c
      src/state.c
      src/textview.c

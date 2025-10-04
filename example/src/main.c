@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <cdroid/activity.h>
 #include <cdroid/linearlayout.h>
 #include <cdroid/log.h>
@@ -6,21 +8,23 @@
 #include <cdroid/toast.h>
 #include <cdroid/view.h>
 
-struct cdroid_activity main_act = { 0 };
-
 void
-text_callback ()
+text_callback (void *udata)
 {
+  struct cdroid_activity *main_act = (struct cdroid_activity *)udata;
   struct cdroid_toast my;
-  cdroid_toast_new (&my, &main_act, "TextClicked", TOAST_DURATION_SHORT);
+  cdroid_toast_new (&my, main_act, "TextClicked", TOAST_DURATION_SHORT);
   cdroid_toast_show (&my);
 }
 
 int
 main (int argc, char **argv)
 {
+  /** we malloc it because we pass it to callbacks, so it should be static or dynamic allocated */
+  struct cdroid_activity *main_act = malloc (sizeof (struct cdroid_activity));
+
   /** get the main activity reference */
-  if (cdroid_pub_get_main_activity (&main_act) != 0)
+  if (cdroid_pub_get_main_activity (main_act) != 0)
     {
       LOGE ("Something wrong with the main activity at %s, "
             "closing...\n",
@@ -30,7 +34,7 @@ main (int argc, char **argv)
 
   /** creates new linearlayout */
   struct cdroid_view content;
-  if (cdroid_linearlayout_new (&content, &main_act) != 0)
+  if (cdroid_linearlayout_new (&content, main_act) != 0)
     {
       LOGE ("Failed to create linearlayout at %s\n", __func__);
       return -1;
@@ -46,7 +50,7 @@ main (int argc, char **argv)
 
   /** creates a new textview */
   struct cdroid_view tv;
-  if (cdroid_textview_new (&tv, &main_act) != 0)
+  if (cdroid_textview_new (&tv, main_act) != 0)
     {
       LOGE ("Failed to create textview at %s\n", __func__);
       return -1;
@@ -65,14 +69,14 @@ main (int argc, char **argv)
       return -1;
     }
 
-  if (cdroid_view_set_click_listener (&tv, text_callback) != 0)
+  if (cdroid_view_set_click_listener (&tv, text_callback, main_act) != 0)
     {
       LOGE ("Failed to set textview click callback at %s\n", __func__);
       return -1;
     }
 
   /** defines activity content */
-  if (cdroid_activity_set_contentview (&main_act, &content) != 0)
+  if (cdroid_activity_set_contentview (main_act, &content) != 0)
     {
       LOGE ("Failed to set MainActivity content view at %s\n", __func__);
       return -1;

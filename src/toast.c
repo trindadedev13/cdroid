@@ -69,7 +69,7 @@ cdroid_toast_new (struct cdroid_toast *dest, struct cdroid_activity *act,
       return -1;
     }
 
-  dest->instance = ins;
+  dest->instance = j_env_new_global_ref (env, ins);
   return 0;
 }
 

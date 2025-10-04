@@ -24,6 +24,8 @@ cdroid_activity_new (struct cdroid_activity *dest, j_class clazz,
   /** store global ref of activity instance object */
   dest->instance = j_env_new_global_ref (env, instance);
   dest->clazz = j_env_new_global_ref (env, clazz);
+  j_env_delete_local_ref (env, instance);
+  j_env_delete_local_ref (env, clazz);
   return 0;
 }
 

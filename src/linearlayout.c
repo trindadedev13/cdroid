@@ -50,7 +50,8 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
 
   dest->type = VIEW_LINEARLAYOUT;
   dest->clazz = clazz;
-  dest->instance = ins;
+  dest->instance = j_env_new_global_ref (env, ins);
+  j_env_delete_local_ref (env, ins);
   dest->__special__ = NULL;
   return 0;
 }
