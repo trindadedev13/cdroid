@@ -21,7 +21,8 @@ text_callback (void *udata)
 int
 main (int argc, char **argv)
 {
-  /** we malloc it because we pass it to callbacks, so it should be static or dynamic allocated */
+  /** we malloc it because we pass it to callbacks, so it should be static or
+   * dynamic allocated */
   struct cdroid_activity *main_act = malloc (sizeof (struct cdroid_activity));
 
   /** get the main activity reference */
@@ -50,8 +51,7 @@ main (int argc, char **argv)
     }
 
   /** defines content gravity to center */
-  if (cdroid_linearlayout_set_gravity (&content, GRAVITY_CENTER)
-      != 0)
+  if (cdroid_linearlayout_set_gravity (&content, GRAVITY_CENTER) != 0)
     {
       LOGE ("Failed to set linearlayout gravity at %s\n", __func__);
       return -1;

@@ -31,7 +31,8 @@ __cdroid_check_clazz__ (j_env *env)
  * @patam dest     : The new View.OnClickListener mem dest.
  */
 i8
-__cdroid_viewhelper_create_click_listener__ (struct __cdroid_callback_node__ *callback, j_object *dest)
+__cdroid_viewhelper_create_click_listener__ (
+    struct __cdroid_callback_node__ *callback, j_object *dest)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
