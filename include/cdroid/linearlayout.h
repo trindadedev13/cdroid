@@ -18,6 +18,7 @@ struct __cdroid_linearlayout__;
 
 i8 cdroid_linearlayout_new (struct cdroid_view *, struct cdroid_activity *);
 i8 cdroid_linearlayout_set_orientation (struct cdroid_view *, i8);
+i8 cdroid_linearlayout_set_gravity (struct cdroid_view *, i32);
 
 CDROID_HEADER_END
 

@@ -59,8 +59,8 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
 /**
  * Defines the linearlayout orientation
  *
- * @param self : The linearlayout data struct
- * @param txt  : The new orientation
+ * @param self        : The linearlayout data struct
+ * @param orientation : The new orientation
  */
 i8
 cdroid_linearlayout_set_orientation (struct cdroid_view *self, i8 orientation)
@@ -86,5 +86,38 @@ cdroid_linearlayout_set_orientation (struct cdroid_view *self, i8 orientation)
    * passing the new orientation
    */
   j_env_call_void_method (env, self->instance, m_id, orientation);
+  return 0;
+}
+
+/**
+ * Defines the linearlayout gravity
+ *
+ * @param self    : The linearlayout data struct
+ * @param gravity : The new gravity
+ */
+i8
+cdroid_linearlayout_set_gravity (struct cdroid_view *self, i32 gravity)
+{
+  j_env *env = NULL;
+  if (__cdroid_state_get_env__ ((void **)&env) != 0)
+    {
+      LOGE ("Failed to get env at %s\n", __func__);
+      return -1;
+    }
+
+  /** get android.widget.LinearLayout#setGravity(int) */
+  j_method_id m_id
+      = j_env_get_method_id (env, self->clazz, "setGravity", "(I)V");
+  if (!m_id)
+    {
+      LOGE ("Failed to get setGravity(int) method id.\n");
+      return -1;
+    }
+
+  /**
+   * calls android.widget.LinearLayout#setGravity(int)
+   * passing the new orientation
+   */
+  j_env_call_void_method (env, self->instance, m_id, gravity);
   return 0;
 }

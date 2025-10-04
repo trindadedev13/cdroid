@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include <cdroid/activity.h>
+#include <cdroid/gravity.h>
 #include <cdroid/linearlayout.h>
 #include <cdroid/log.h>
 #include <cdroid/pub.h>
@@ -45,6 +46,14 @@ main (int argc, char **argv)
       != 0)
     {
       LOGE ("Failed to set linearlayout orientation at %s\n", __func__);
+      return -1;
+    }
+
+  /** defines content gravity to center */
+  if (cdroid_linearlayout_set_gravity (&content, GRAVITY_CENTER)
+      != 0)
+    {
+      LOGE ("Failed to set linearlayout gravity at %s\n", __func__);
       return -1;
     }
 
