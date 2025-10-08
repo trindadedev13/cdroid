@@ -10,7 +10,7 @@
 
 typedef int (*cdroid_main_func) (int argc, char *argv[]);
 
-struct __cdroid_state__ __state__ = {};
+struct __cdroid_state__ __state__ = { 0 };
 
 /**
  * Provides the JNIEnv instance or -1 if error.
@@ -42,6 +42,9 @@ __cdroid_state_get_env__ (void **dest)
 int
 __cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
 {
+  cdroid_main_func fn;
+  int argc, i, status;
+  char *argv[1];
   void *lib_hdl = dlopen (lib_path, RTLD_GLOBAL);
   if (lib_hdl == NULL)
     {
@@ -59,7 +62,7 @@ __cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
       return -1;
     }
 
-  cdroid_main_func fn = (cdroid_main_func)dlsym (lib_hdl, fn_name);
+  fn = (cdroid_main_func)dlsym (lib_hdl, fn_name);
   if (!fn)
     {
       LOGE ("Failed to load function %s at library %s at %s\n", fn_name,
@@ -67,11 +70,10 @@ __cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
       return -1;
     }
 
-  int argc = 1;
-  char *argv[] = { str_dup ("cdroid") };
-  int status = fn (argc, argv);
-  size_t i = 0;
-  for (; i < argc; ++i)
+  argc = 1;
+  argv[0] = str_dup ("cdroid");
+  status = fn (argc, argv);
+  for (i = 0; i < argc; ++i)
     {
       if (argv[i])
         {
@@ -82,7 +84,7 @@ __cdroid_state_load_main__ (const char *lib_path, const char *fn_name)
 }
 
 i8
-__cdroid_state_delete__ ()
+__cdroid_state_delete__ (void)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)

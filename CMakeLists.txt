@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.22)
 project (cdroid)
 
 set (CMAKE_C_STANDARD 90)
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -pedantic")
 
 set (SOURCES
      src/activity.c

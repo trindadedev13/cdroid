@@ -12,6 +12,7 @@
 j_int
 JNI_OnLoad (j_vm *jvm, void *__reserved__)
 {
+  (void)__reserved__;
   __state__.jvm = jvm;
   return JNI_VERSION_1_6;
 }
@@ -19,6 +20,8 @@ JNI_OnLoad (j_vm *jvm, void *__reserved__)
 void
 JNI_UnLoad (j_vm *jvm, void *__reserved__)
 {
+  (void)jvm;
+  (void)__reserved__;
   __cdroid_state_delete__ ();
 }
 
@@ -33,8 +36,14 @@ J_EXPORT j_int J_CALL
 CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
                                   j_string lib_path, j_string fn_name)
 {
+  const char *lib_path_str;
+  const char *fn_name_str;
+  j_class act_class;
+
+  (void)clazz;
+
   /** find android.app.Activity class ref */
-  j_class act_class = j_env_find_class (env, "android/app/Activity");
+  act_class = j_env_find_class (env, "android/app/Activity");
   if (!act_class)
     {
       LOGE ("Failed to find android/app/Activity class at "
@@ -51,7 +60,7 @@ CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
     }
 
   /** convert lib path java string to C Chars */
-  const char *lib_path_str = j_env_get_str_utf_chars (env, lib_path, NULL);
+  lib_path_str = j_env_get_str_utf_chars (env, lib_path, NULL);
   if (!lib_path_str)
     {
       LOGE ("Invalid library name provided. Please provided "
@@ -60,7 +69,7 @@ CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
     }
 
   /** convert main fn name java string to C Chars */
-  const char *fn_name_str = j_env_get_str_utf_chars (env, fn_name, NULL);
+  fn_name_str = j_env_get_str_utf_chars (env, fn_name, NULL);
   if (!fn_name_str)
     {
       LOGE ("Invalid function name provided. Please "

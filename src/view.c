@@ -34,6 +34,8 @@ cdroid_view_type_tostr (enum cdroid_view_type type)
 i8
 cdroid_view_is_viewgroup (struct cdroid_view *self)
 {
+  j_class v;
+  j_bool res;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -41,7 +43,7 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
       return -1;
     }
 
-  j_class v = j_env_find_class (env, "android/view/ViewGroup");
+  v = j_env_find_class (env, "android/view/ViewGroup");
   if (!v)
     {
       LOGE ("Failed to get android/view/ViewGroup class ref "
@@ -50,7 +52,7 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
       return -1;
     }
 
-  j_bool res = j_env_is_instanceof (env, self->instance, v);
+  res = j_env_is_instanceof (env, self->instance, v);
   return (res == J_TRUE) ? 0 : -1;
 }
 
@@ -66,13 +68,15 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
 i8
 cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
 {
+  j_env *env = NULL;
+  j_method_id m_id;
+
   if (cdroid_view_is_viewgroup (self) != 0)
     {
       LOGE ("%s is not a ViewGroup.\n", cdroid_view_type_tostr (self->type));
       return -1;
     }
 
-  j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
       LOGE ("Failed to get env at %s\n", __func__);
@@ -80,8 +84,8 @@ cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
     }
 
   /** get android.view.View#addView(android.view.View) */
-  j_method_id m_id = j_env_get_method_id (env, self->clazz, "addView",
-                                          "(Landroid/view/View;)V");
+  m_id = j_env_get_method_id (env, self->clazz, "addView",
+                              "(Landroid/view/View;)V");
   if (!m_id)
     {
       LOGE ("Failed to get addView(android/view/View) method id.\n");
@@ -112,6 +116,10 @@ i8
 cdroid_view_set_click_listener (struct cdroid_view *self,
                                 __cdroid_callback_fn__ fn, void *udata)
 {
+  struct __cdroid_callback_node__ *node;
+  j_object j_listener;
+  j_method_id m_id;
+
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -119,10 +127,8 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
       return -1;
     }
 
-  struct __cdroid_callback_node__ *node;
   __cdroid_callback_node_register__ (fn, udata, &node);
 
-  j_object j_listener = NULL;
   if (__cdroid_viewhelper_create_click_listener__ (node, &j_listener) != 0)
     {
       LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
@@ -133,9 +139,8 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
 
   /** get
    * android.view.View#setOnClickListener(android.view.View$OnClickListener) */
-  j_method_id m_id
-      = j_env_get_method_id (env, self->clazz, "setOnClickListener",
-                             "(Landroid/view/View$OnClickListener;)V");
+  m_id = j_env_get_method_id (env, self->clazz, "setOnClickListener",
+                              "(Landroid/view/View$OnClickListener;)V");
   if (!m_id)
     {
       LOGE ("Failed to get setOnClickListener(cdroid/app/View) "

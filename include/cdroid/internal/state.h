@@ -24,7 +24,7 @@ i8 __cdroid_state_get_env__ (void **);
 
 int __cdroid_state_load_main__ (const char *, const char *);
 
-i8 __cdroid_state_delete__ ();
+i8 __cdroid_state_delete__ (void);
 
 CDROID_HEADER_END
 

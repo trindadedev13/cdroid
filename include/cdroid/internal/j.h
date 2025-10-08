@@ -35,15 +35,56 @@ CDROID_HEADER_BEGIN
 #define j_env_get_static_method_id(env, clazz, name, sign)                    \
   (*env)->GetStaticMethodID (env, clazz, name, sign)
 
-#define j_env_call_void_method(env, obj, id, ...)                             \
-  (*env)->CallVoidMethod (env, obj, id, ##__VA_ARGS__)
-#define j_env_call_long_method(env, obj, id, ...)                             \
-  (*env)->CallLongMethod (env, obj, id, ##__VA_ARGS__)
-#define j_env_call_static_object_method(env, clazz, id, ...)                  \
-  (*env)->CallStaticObjectMethod (env, clazz, id, ##__VA_ARGS__)
+#define __VA_END__ () va_end (args)
 
-#define j_env_new_object(env, clazz, id, ...)                                 \
-  (*env)->NewObject (env, clazz, id, ##__VA_ARGS__)
+/**
+ * Functions that have variadics arguments.
+ * we do this because C90 don't support variadic in macros.
+ */
+
+static void
+j_env_call_void_method (j_env *env, j_object obj, j_method_id id, ...)
+{
+  va_list args;
+  va_start (args, id);
+  (*env)->CallVoidMethodV (env, obj, id, args);
+  va_end (args);
+}
+
+static j_long
+j_env_call_long_method (j_env *env, j_object obj, j_method_id id, ...)
+{
+  j_long ret;
+  va_list args;
+  va_start (args, id);
+  ret = (*env)->CallLongMethodV (env, obj, id, args);
+  va_end (args);
+  return ret;
+}
+
+static j_object
+j_env_call_static_object_method (j_env *env, j_class clazz, j_method_id id,
+                                 ...)
+{
+  j_object ret;
+  va_list args;
+  va_start (args, id);
+  ret = (*env)->CallStaticObjectMethodV (env, clazz, id, args);
+  va_end (args);
+  return ret;
+}
+
+static j_object
+j_env_new_object (j_env *env, j_class clazz, j_method_id id, ...)
+{
+  j_object ret;
+  va_list args;
+  va_start (args, id);
+  ret = (*env)->NewObjectV (env, clazz, id, args);
+  va_end (args);
+  return ret;
+}
+
 #define j_env_get_str_utf_chars(env, js, v)                                   \
   (*env)->GetStringUTFChars (env, js, v)
 #define j_env_release_str_utf_chars(env, str, chars)                          \

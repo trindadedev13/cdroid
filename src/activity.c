@@ -79,6 +79,7 @@ i8
 cdroid_activity_set_contentview (struct cdroid_activity *self,
                                  struct cdroid_view *content)
 {
+  j_method_id m_id;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -87,8 +88,8 @@ cdroid_activity_set_contentview (struct cdroid_activity *self,
     }
 
   /** get android.app.Activity#setContent(android.view.View) */
-  j_method_id m_id = j_env_get_method_id (env, self->clazz, "setContentView",
-                                          "(Landroid/view/View;)V");
+  m_id = j_env_get_method_id (env, self->clazz, "setContentView",
+                              "(Landroid/view/View;)V");
   if (!m_id)
     {
       LOGE ("Failed to get setContentView(android/view/View) "

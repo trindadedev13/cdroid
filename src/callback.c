@@ -30,13 +30,14 @@ __cdroid_callback_node_register__ (__cdroid_callback_fn__ fn, void *udata,
 i8
 __cdroid_callback_node_unregister__ (struct __cdroid_callback_node__ *node)
 {
+  struct __cdroid_callback_node__ **cur = &__callback_list__;
+
   if (!node)
     {
       LOGE ("Invalid Node to unregister at %s.\n", __func__);
       return -1;
     }
 
-  struct __cdroid_callback_node__ **cur = &__callback_list__;
   while (*cur)
     {
       if (*cur == node)
@@ -63,5 +64,7 @@ CDROID_JAVA (CDroid, nativeCall) (j_env *env, j_class clazz,
   struct __cdroid_callback_node__ *callback
       = (struct __cdroid_callback_node__ *)callback_ptr;
   callback->fn (callback->udata);
+  (void)env;
+  (void)clazz;
   return 0;
 }

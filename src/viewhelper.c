@@ -34,6 +34,9 @@ i8
 __cdroid_viewhelper_create_click_listener__ (
     struct __cdroid_callback_node__ *callback, j_object *dest)
 {
+  j_method_id m_id;
+  j_long callback_ptr;
+  j_object listener;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -45,9 +48,9 @@ __cdroid_viewhelper_create_click_listener__ (
     return -1;
 
   /** get cdroid.app.ViewHelper#createClickListener(long) */
-  j_method_id m_id = j_env_get_static_method_id (
-      env, __state__.__viewhelper_clazz__, "createClickListener",
-      "(J)Landroid/view/View$OnClickListener;");
+  m_id = j_env_get_static_method_id (env, __state__.__viewhelper_clazz__,
+                                     "createClickListener",
+                                     "(J)Landroid/view/View$OnClickListener;");
   if (!m_id)
     {
       LOGE ("Failed to get createClickListener(long) "
@@ -55,13 +58,13 @@ __cdroid_viewhelper_create_click_listener__ (
       return -1;
     }
 
-  j_long callback_ptr = (j_long)(uiptr)callback;
+  callback_ptr = (j_long)(uiptr)callback;
 
   /**
    * calls cdroid.app.ViewHelper#createClickListener(long)
    * passing the view and pointer
    */
-  j_object listener = j_env_call_static_object_method (
+  listener = j_env_call_static_object_method (
       env, __state__.__viewhelper_clazz__, m_id, callback_ptr);
   if (!listener)
     {

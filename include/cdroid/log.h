@@ -7,20 +7,32 @@ CDROID_HEADER_BEGIN
 
 #include <android/log.h>
 
-#ifndef LOGE
-#define LOGE(fmt, ...)                                                        \
-  __android_log_print (ANDROID_LOG_ERROR, "CDroid", fmt, ##__VA_ARGS__)
-#endif
+static void
+LOGE (const char *fmt, ...)
+{
+  va_list args;
+  va_start (args, fmt);
+  __android_log_vprint (ANDROID_LOG_ERROR, "CDroid", fmt, args);
+  va_end (args);
+}
 
-#ifndef LOGD
-#define LOGD(fmt, ...)                                                        \
-  __android_log_print (ANDROID_LOG_DEBUG, "CDroid", fmt, ##__VA_ARGS__)
-#endif
+static void
+LOGD (const char *fmt, ...)
+{
+  va_list args;
+  va_start (args, fmt);
+  __android_log_vprint (ANDROID_LOG_DEBUG, "CDroid", fmt, args);
+  va_end (args);
+}
 
-#ifndef LOGI
-#define LOGI(fmt, ...)                                                        \
-  __android_log_print (ANDROID_LOG_INFO, "CDroid", fmt, ##__VA_ARGS__)
-#endif
+static void
+LOGI (const char *fmt, ...)
+{
+  va_list args;
+  va_start (args, fmt);
+  __android_log_vprint (ANDROID_LOG_INFO, "CDroid", fmt, args);
+  va_end (args);
+}
 
 CDROID_HEADER_END
 

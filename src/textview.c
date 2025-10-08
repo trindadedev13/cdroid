@@ -15,6 +15,9 @@
 i8
 cdroid_textview_new (struct cdroid_view *dest, struct cdroid_activity *act)
 {
+  j_class clazz;
+  j_method_id con;
+  j_object ins;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -23,7 +26,7 @@ cdroid_textview_new (struct cdroid_view *dest, struct cdroid_activity *act)
     }
 
   /** get textview class ref */
-  j_class clazz = j_env_find_class (env, "android/widget/TextView");
+  clazz = j_env_find_class (env, "android/widget/TextView");
   if (!clazz)
     {
       LOGE ("Failed to get TextView Class at %s\n", __func__);
@@ -31,15 +34,15 @@ cdroid_textview_new (struct cdroid_view *dest, struct cdroid_activity *act)
     }
 
   /** call textview class constructor */
-  j_method_id con = j_env_get_method_id (env, clazz, "<init>",
-                                         "(Landroid/content/Context;)V");
+  con = j_env_get_method_id (env, clazz, "<init>",
+                             "(Landroid/content/Context;)V");
   if (!con)
     {
       LOGE ("Failed to get TextView Class Constructor at %s\n", __func__);
       return -1;
     }
 
-  j_object ins = j_env_new_object (env, clazz, con, act->instance);
+  ins = j_env_new_object (env, clazz, con, act->instance);
   if (!ins)
     {
       LOGE ("Failed to instanciate TextView at %s\n", __func__);
@@ -63,6 +66,8 @@ cdroid_textview_new (struct cdroid_view *dest, struct cdroid_activity *act)
 i8
 cdroid_textview_set_text (struct cdroid_view *self, const char *txt)
 {
+  j_method_id m_id;
+  j_string java_text;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
     {
@@ -71,8 +76,8 @@ cdroid_textview_set_text (struct cdroid_view *self, const char *txt)
     }
 
   /** get android.widget.TextView#setText(java.lang.CharSequence) */
-  j_method_id m_id = j_env_get_method_id (env, self->clazz, "setText",
-                                          "(Ljava/lang/CharSequence;)V");
+  m_id = j_env_get_method_id (env, self->clazz, "setText",
+                              "(Ljava/lang/CharSequence;)V");
   if (!m_id)
     {
       LOGE ("Failed to get setText(java/lang/CharSequence) "
@@ -84,7 +89,7 @@ cdroid_textview_set_text (struct cdroid_view *self, const char *txt)
    * calls android.widget.TextView#setText(java.lang.String)
    * passing the new text
    */
-  j_string java_text = j_env_new_string_utf (env, txt);
+  java_text = j_env_new_string_utf (env, txt);
   j_env_call_void_method (env, self->instance, m_id, java_text);
   j_env_delete_local_ref (env, java_text);
   return 0;

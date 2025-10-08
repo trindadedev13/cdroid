@@ -5,6 +5,9 @@ project(cdroid_example)
 set(SOURCES
     src/main.c)
 
+set (CMAKE_C_STANDARD 90)
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -pedantic")
+
 set(HEADERS)
 
 add_subdirectory(../ ${CMAKE_CURRENT_BINARY_DIR}/cdroid_build)

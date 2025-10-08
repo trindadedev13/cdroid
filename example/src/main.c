@@ -21,9 +21,16 @@ text_callback (void *udata)
 int
 main (int argc, char **argv)
 {
+  struct cdroid_activity *main_act;
+  struct cdroid_view content;
+  struct cdroid_view tv;
+
+  (void)argc;
+  (void)argv;
+
   /** we malloc it because we pass it to callbacks, so it should be static or
    * dynamic allocated */
-  struct cdroid_activity *main_act = malloc (sizeof (struct cdroid_activity));
+  main_act = malloc (sizeof (struct cdroid_activity));
 
   /** get the main activity reference */
   if (cdroid_pub_get_main_activity (main_act) != 0)
@@ -35,7 +42,7 @@ main (int argc, char **argv)
     }
 
   /** creates new linearlayout */
-  struct cdroid_view content;
+
   if (cdroid_linearlayout_new (&content, main_act) != 0)
     {
       LOGE ("Failed to create linearlayout at %s\n", __func__);
@@ -58,7 +65,6 @@ main (int argc, char **argv)
     }
 
   /** creates a new textview */
-  struct cdroid_view tv;
   if (cdroid_textview_new (&tv, main_act) != 0)
     {
       LOGE ("Failed to create textview at %s\n", __func__);
