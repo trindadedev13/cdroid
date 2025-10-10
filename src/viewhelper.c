@@ -10,17 +10,17 @@ static i8
 __cdroid_check_clazz__ (j_env *env)
 {
   if (!__state__.__viewhelper_clazz__)
+  {
+    /** get ViewHelper class ref */
+    j_class clazz = j_env_find_class (env, "cdroid/app/ViewHelper");
+    if (!clazz)
     {
-      /** get ViewHelper class ref */
-      j_class clazz = j_env_find_class (env, "cdroid/app/ViewHelper");
-      if (!clazz)
-        {
-          LOGE ("Failed to get ViewHelper Class at %s\n", __func__);
-          return -1;
-        }
-      __state__.__viewhelper_clazz__ = j_env_new_global_ref (env, clazz);
-      j_env_delete_local_ref (env, clazz);
+      LOGE ("Failed to get ViewHelper Class at %s\n", __func__);
+      return -1;
     }
+    __state__.__viewhelper_clazz__ = j_env_new_global_ref (env, clazz);
+    j_env_delete_local_ref (env, clazz);
+  }
   return 0;
 }
 
@@ -39,10 +39,10 @@ __cdroid_viewhelper_create_click_listener__ (
   j_object listener;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   if (__cdroid_check_clazz__ (env) != 0)
     return -1;
@@ -52,11 +52,11 @@ __cdroid_viewhelper_create_click_listener__ (
                                      "createClickListener",
                                      "(J)Landroid/view/View$OnClickListener;");
   if (!m_id)
-    {
-      LOGE ("Failed to get createClickListener(long) "
-            "method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get createClickListener(long) "
+          "method id.\n");
+    return -1;
+  }
 
   callback_ptr = (j_long)(uiptr)callback;
 
@@ -67,10 +67,10 @@ __cdroid_viewhelper_create_click_listener__ (
   listener = j_env_call_static_object_method (
       env, __state__.__viewhelper_clazz__, m_id, callback_ptr);
   if (!listener)
-    {
-      LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
+    return -1;
+  }
   *dest = j_env_new_global_ref (env, listener);
   j_env_delete_local_ref (env, listener);
   return 0;

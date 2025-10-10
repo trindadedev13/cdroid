@@ -15,10 +15,10 @@ __cdroid_callback_node_register__ (__cdroid_callback_fn__ fn, void *udata,
 {
   *dest = malloc (sizeof (struct __cdroid_callback_node__));
   if (*dest == NULL)
-    {
-      LOGE ("Failed to allocate callback node at %s.\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to allocate callback node at %s.\n", __func__);
+    return -1;
+  }
 
   (*dest)->fn = fn;
   (*dest)->udata = udata;
@@ -33,21 +33,21 @@ __cdroid_callback_node_unregister__ (struct __cdroid_callback_node__ *node)
   struct __cdroid_callback_node__ **cur = &__callback_list__;
 
   if (!node)
-    {
-      LOGE ("Invalid Node to unregister at %s.\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Invalid Node to unregister at %s.\n", __func__);
+    return -1;
+  }
 
   while (*cur)
+  {
+    if (*cur == node)
     {
-      if (*cur == node)
-        {
-          *cur = node->next;
-          free (node);
-          return 0;
-        }
-      cur = &(*cur)->next;
+      *cur = node->next;
+      free (node);
+      return 0;
     }
+    cur = &(*cur)->next;
+  }
 
   return 0;
 }

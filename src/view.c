@@ -11,16 +11,16 @@ const char *
 cdroid_view_type_tostr (enum cdroid_view_type type)
 {
   switch (type)
-    {
-    case VIEW:
-      return "View";
-    case VIEW_TEXT:
-      return "TextView";
-    case VIEW_LINEARLAYOUT:
-      return "LinearLayout";
-    default:
-      return "Unknown View";
-    };
+  {
+  case VIEW:
+    return "View";
+  case VIEW_TEXT:
+    return "TextView";
+  case VIEW_LINEARLAYOUT:
+    return "LinearLayout";
+  default:
+    return "Unknown View";
+  };
 }
 
 /**
@@ -38,19 +38,19 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
   j_bool res;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   v = j_env_find_class (env, "android/view/ViewGroup");
   if (!v)
-    {
-      LOGE ("Failed to get android/view/ViewGroup class ref "
-            "at %s\n",
-            __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get android/view/ViewGroup class ref "
+          "at %s\n",
+          __func__);
+    return -1;
+  }
 
   res = j_env_is_instanceof (env, self->instance, v);
   return (res == J_TRUE) ? 0 : -1;
@@ -72,25 +72,25 @@ cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
   j_method_id m_id;
 
   if (cdroid_view_is_viewgroup (self) != 0)
-    {
-      LOGE ("%s is not a ViewGroup.\n", cdroid_view_type_tostr (self->type));
-      return -1;
-    }
+  {
+    LOGE ("%s is not a ViewGroup.\n", cdroid_view_type_tostr (self->type));
+    return -1;
+  }
 
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** get android.view.View#addView(android.view.View) */
   m_id = j_env_get_method_id (env, self->clazz, "addView",
                               "(Landroid/view/View;)V");
   if (!m_id)
-    {
-      LOGE ("Failed to get addView(android/view/View) method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get addView(android/view/View) method id.\n");
+    return -1;
+  }
 
   /**
    * calls android.view.View#addView(android.view.View)
@@ -122,18 +122,18 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
 
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   __cdroid_callback_node_register__ (fn, udata, &node);
 
   if (__cdroid_viewhelper_create_click_listener__ (node, &j_listener) != 0)
-    {
-      LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to create View.OnClickListener at %s.\n", __func__);
+    return -1;
+  }
 
   /** now we call View#setOnClickListener */
 
@@ -142,11 +142,11 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
   m_id = j_env_get_method_id (env, self->clazz, "setOnClickListener",
                               "(Landroid/view/View$OnClickListener;)V");
   if (!m_id)
-    {
-      LOGE ("Failed to get setOnClickListener(cdroid/app/View) "
-            "method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get setOnClickListener(cdroid/app/View) "
+          "method id.\n");
+    return -1;
+  }
 
   /**
    * calls

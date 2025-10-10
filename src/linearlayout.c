@@ -20,36 +20,36 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
   j_object ins;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** get linearlayout class ref */
   clazz = j_env_find_class (env, "android/widget/LinearLayout");
   if (!clazz)
-    {
-      LOGE ("Failed to get LinearLayout Class at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get LinearLayout Class at %s\n", __func__);
+    return -1;
+  }
 
   /** call linearlayout class constructor */
   con = j_env_get_method_id (env, clazz, "<init>",
                              "(Landroid/content/Context;)V");
   if (!con)
-    {
-      LOGE ("Failed to get LinearLayout Class Constructor "
-            "at %s\n",
-            __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get LinearLayout Class Constructor "
+          "at %s\n",
+          __func__);
+    return -1;
+  }
 
   ins = j_env_new_object (env, clazz, con, act->instance);
   if (!ins)
-    {
-      LOGE ("Failed to instanciate LinearLayout at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to instanciate LinearLayout at %s\n", __func__);
+    return -1;
+  }
 
   dest->type = VIEW_LINEARLAYOUT;
   dest->clazz = clazz;
@@ -71,18 +71,18 @@ cdroid_linearlayout_set_orientation (struct cdroid_view *self, i8 orientation)
   j_method_id m_id;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** get android.widget.LinearLayout#setOrientation(int) */
   m_id = j_env_get_method_id (env, self->clazz, "setOrientation", "(I)V");
   if (!m_id)
-    {
-      LOGE ("Failed to get setOrientation(int) method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get setOrientation(int) method id.\n");
+    return -1;
+  }
 
   /**
    * calls android.widget.LinearLayout#setOrientation(int)
@@ -104,18 +104,18 @@ cdroid_linearlayout_set_gravity (struct cdroid_view *self, i32 gravity)
   j_method_id m_id;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** get android.widget.LinearLayout#setGravity(int) */
   m_id = j_env_get_method_id (env, self->clazz, "setGravity", "(I)V");
   if (!m_id)
-    {
-      LOGE ("Failed to get setGravity(int) method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get setGravity(int) method id.\n");
+    return -1;
+  }
 
   /**
    * calls android.widget.LinearLayout#setGravity(int)

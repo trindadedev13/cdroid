@@ -45,44 +45,44 @@ CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
   /** find android.app.Activity class ref */
   act_class = j_env_find_class (env, "android/app/Activity");
   if (!act_class)
-    {
-      LOGE ("Failed to find android/app/Activity class at "
-            "%s\n",
-            __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to find android/app/Activity class at "
+          "%s\n",
+          __func__);
+    return -1;
+  }
 
   /** create cdroid android activity */
   if (cdroid_activity_new (&__state__.main_activity, act_class, act) != 0)
-    {
-      LOGE ("Failed to create main activity at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to create main activity at %s\n", __func__);
+    return -1;
+  }
 
   /** convert lib path java string to C Chars */
   lib_path_str = j_env_get_str_utf_chars (env, lib_path, NULL);
   if (!lib_path_str)
-    {
-      LOGE ("Invalid library name provided. Please provided "
-            "a valid one.");
-      return -1;
-    }
+  {
+    LOGE ("Invalid library name provided. Please provided "
+          "a valid one.");
+    return -1;
+  }
 
   /** convert main fn name java string to C Chars */
   fn_name_str = j_env_get_str_utf_chars (env, fn_name, NULL);
   if (!fn_name_str)
-    {
-      LOGE ("Invalid function name provided. Please "
-            "provided a valid one.");
-      return -1;
-    }
+  {
+    LOGE ("Invalid function name provided. Please "
+          "provided a valid one.");
+    return -1;
+  }
 
   /** load and call the main function based on input */
   if (__cdroid_state_load_main__ (lib_path_str, fn_name_str) != 0)
-    {
-      LOGE ("Failed to run cdroid main at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to run cdroid main at %s\n", __func__);
+    return -1;
+  }
 
   /** release java strings */
   j_env_release_str_utf_chars (env, lib_path, lib_path_str);

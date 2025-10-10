@@ -16,10 +16,10 @@ cdroid_activity_new (struct cdroid_activity *dest, j_class clazz,
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** store global ref of activity instance object */
   dest->instance = j_env_new_global_ref (env, instance);
@@ -39,10 +39,10 @@ cdroid_activity_delete (struct cdroid_activity *self)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** delete global ref of activity object instance */
   j_env_delete_global_ref (env, self->instance);
@@ -82,20 +82,20 @@ cdroid_activity_set_contentview (struct cdroid_activity *self,
   j_method_id m_id;
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
-    {
-      LOGE ("Failed to get env at %s\n", __func__);
-      return -1;
-    }
+  {
+    LOGE ("Failed to get env at %s\n", __func__);
+    return -1;
+  }
 
   /** get android.app.Activity#setContent(android.view.View) */
   m_id = j_env_get_method_id (env, self->clazz, "setContentView",
                               "(Landroid/view/View;)V");
   if (!m_id)
-    {
-      LOGE ("Failed to get setContentView(android/view/View) "
-            "method id.\n");
-      return -1;
-    }
+  {
+    LOGE ("Failed to get setContentView(android/view/View) "
+          "method id.\n");
+    return -1;
+  }
 
   /**
    * calls android.app.Activity#setContent(android.view.View)
