@@ -38,22 +38,11 @@ CDROID_JAVA (CDroid, nativeInit) (j_env *env, j_class clazz, j_object act,
 {
   const char *lib_path_str;
   const char *fn_name_str;
-  j_class act_class;
 
   (void)clazz;
 
-  /** find android.app.Activity class ref */
-  act_class = j_env_find_class (env, "android/app/Activity");
-  if (!act_class)
-  {
-    LOGE ("Failed to find android/app/Activity class at "
-          "%s\n",
-          __func__);
-    return -1;
-  }
-
   /** create cdroid android activity */
-  if (cdroid_activity_new (&__state__.main_activity, act_class, act) != 0)
+  if (cdroid_activity_new (&__state__.main_activity, act) != 0)
   {
     LOGE ("Failed to create main activity at %s\n", __func__);
     return -1;

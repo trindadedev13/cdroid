@@ -3,6 +3,24 @@
 #include "cdroid/internal/state.h"
 #include "cdroid/log.h"
 
+static i8
+__cdroid_check_clazz__ (j_env *env)
+{
+  if (!__state__.__activity_clazz__)
+  {
+    /** get Activity class ref */
+    j_class clazz = j_env_find_class (env, "android/app/Activity");
+    if (!clazz)
+    {
+      LOGE ("Failed to get Activity Class at %s\n", __func__);
+      return -1;
+    }
+    __state__.__activity_clazz__ = j_env_new_global_ref (env, clazz);
+    j_env_delete_local_ref (env, clazz);
+  }
+  return 0;
+}
+
 /**
  * Creates a new activity from a class ref and instance.
  *
@@ -11,8 +29,7 @@
  * @param instance : The instance object
  */
 i8
-cdroid_activity_new (struct cdroid_activity *dest, j_class clazz,
-                     j_object instance)
+cdroid_activity_new (struct cdroid_activity *dest, j_object instance)
 {
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
@@ -21,11 +38,10 @@ cdroid_activity_new (struct cdroid_activity *dest, j_class clazz,
     return -1;
   }
 
-  /** store global ref of activity instance object */
+  if (__cdroid_check_clazz__ (env) != 0)
+    return -1;
+
   dest->instance = j_env_new_global_ref (env, instance);
-  dest->clazz = j_env_new_global_ref (env, clazz);
-  j_env_delete_local_ref (env, instance);
-  j_env_delete_local_ref (env, clazz);
   return 0;
 }
 
@@ -52,19 +68,13 @@ cdroid_activity_delete (struct cdroid_activity *self)
 /**
  * Returns 0 if the activity is valid
  *
- * 0  => Valid
- * -1 => Instance OR class ref is invalid
- * ‐2 => Instance AND class ref is invalid
  */
 i8
 cdroid_activity_is_valid (struct cdroid_activity *self)
 {
-  i8 res = 0;
   if (!self->instance)
-    --res;
-  if (!self->clazz)
-    --res;
-  return res;
+    return -1;
+  return 0;
 }
 
 /**
@@ -88,8 +98,8 @@ cdroid_activity_set_contentview (struct cdroid_activity *self,
   }
 
   /** get android.app.Activity#setContent(android.view.View) */
-  m_id = j_env_get_method_id (env, self->clazz, "setContentView",
-                              "(Landroid/view/View;)V");
+  m_id = j_env_get_method_id (env, __state__.__activity_clazz__,
+                              "setContentView", "(Landroid/view/View;)V");
   if (!m_id)
   {
     LOGE ("Failed to get setContentView(android/view/View) "

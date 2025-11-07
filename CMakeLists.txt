@@ -7,6 +7,7 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -pedanti
 
 set (SOURCES
      src/activity.c
+     src/button.c
      src/callback.c
      src/linearlayout.c
      src/main.c

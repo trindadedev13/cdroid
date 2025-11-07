@@ -97,8 +97,12 @@ __cdroid_state_delete__ (void)
   cdroid_activity_delete (&__state__.main_activity);
 
   j_env_delete_global_ref (env, __state__.__ptr_clazz__);
-  j_env_delete_global_ref (env, __state__.__viewhelper_clazz__);
+  j_env_delete_global_ref (env, __state__.__activity_clazz__);
   j_env_delete_global_ref (env, __state__.__toast_clazz__);
+  j_env_delete_global_ref (env, __state__.__viewhelper_clazz__);
+  j_env_delete_global_ref (env, __state__.__linearlayout_clazz__);
+  j_env_delete_global_ref (env, __state__.__textview_clazz__);
+  j_env_delete_global_ref (env, __state__.__button_clazz__);
 
   return 0;
 }

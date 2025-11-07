@@ -1,6 +1,5 @@
-#include <stdlib.h>
-
 #include <cdroid/activity.h>
+#include <cdroid/button.h>
 #include <cdroid/gravity.h>
 #include <cdroid/linearlayout.h>
 #include <cdroid/log.h>
@@ -10,7 +9,7 @@
 #include <cdroid/view.h>
 
 void
-text_callback (void *udata)
+bt_callback (void *udata)
 {
   struct cdroid_activity *main_act = (struct cdroid_activity *)udata;
   struct cdroid_toast my;
@@ -24,6 +23,7 @@ main (int argc, char **argv)
   struct cdroid_activity *main_act;
   struct cdroid_view content;
   struct cdroid_view tv;
+  struct cdroid_view bt;
 
   (void)argc;
   (void)argv;
@@ -42,52 +42,76 @@ main (int argc, char **argv)
   }
 
   /** creates new linearlayout */
-
-  if (cdroid_linearlayout_new (&content, main_act) != 0)
   {
-    LOGE ("Failed to create linearlayout at %s\n", __func__);
-    return -1;
-  }
+    if (cdroid_linearlayout_new (&content, main_act) != 0)
+    {
+      LOGE ("Failed to create linearlayout at %s\n", __func__);
+      return -1;
+    }
 
-  /** defines content orientation to vertical */
-  if (cdroid_linearlayout_set_orientation (&content, ORIENTATION_VERTICAL)
-      != 0)
-  {
-    LOGE ("Failed to set linearlayout orientation at %s\n", __func__);
-    return -1;
-  }
+    /** defines content orientation to vertical */
+    if (cdroid_linearlayout_set_orientation (&content, ORIENTATION_VERTICAL)
+        != 0)
+    {
+      LOGE ("Failed to set linearlayout orientation at %s\n", __func__);
+      return -1;
+    }
 
-  /** defines content gravity to center */
-  if (cdroid_linearlayout_set_gravity (&content, GRAVITY_CENTER) != 0)
-  {
-    LOGE ("Failed to set linearlayout gravity at %s\n", __func__);
-    return -1;
+    /** defines content gravity to center */
+    if (cdroid_linearlayout_set_gravity (&content, GRAVITY_CENTER) != 0)
+    {
+      LOGE ("Failed to set linearlayout gravity at %s\n", __func__);
+      return -1;
+    }
   }
 
   /** creates a new textview */
-  if (cdroid_textview_new (&tv, main_act) != 0)
   {
-    LOGE ("Failed to create textview at %s\n", __func__);
-    return -1;
+    if (cdroid_textview_new (&tv, main_act) != 0)
+    {
+      LOGE ("Failed to create textview at %s\n", __func__);
+      return -1;
+    }
+
+    /** changes textview text */
+    if (cdroid_textview_set_text (&tv, "Hello world from CDroid") != 0)
+    {
+      LOGE ("Failed to set textview text value at %s\n", __func__);
+      return -1;
+    }
+
+    if (cdroid_view_add_view (&content, &tv) != 0)
+    {
+      LOGE ("Failed to add textview in linearlayout at %s\n", __func__);
+      return -1;
+    }
   }
 
-  /** changes textview text */
-  if (cdroid_textview_set_text (&tv, "Hello world from CDroid") != 0)
+  /** creates new button */
   {
-    LOGE ("Failed to set textview text value at %s\n", __func__);
-    return -1;
-  }
+    if (cdroid_button_new (&bt, main_act) != 0)
+    {
+      LOGE ("Failed to create button at %s", __func__);
+      return -1;
+    }
 
-  if (cdroid_view_add_view (&content, &tv) != 0)
-  {
-    LOGE ("Failed to add textview in linearlayout at %s\n", __func__);
-    return -1;
-  }
+    if (cdroid_button_set_text (&bt, "Click me") != 0)
+    {
+      LOGE ("Failed to set button text value at %s\n", __func__);
+      return -1;
+    }
 
-  if (cdroid_view_set_click_listener (&tv, text_callback, main_act) != 0)
-  {
-    LOGE ("Failed to set textview click callback at %s\n", __func__);
-    return -1;
+    if (cdroid_view_set_click_listener (&bt, bt_callback, main_act) != 0)
+    {
+      LOGE ("Failed to set button click callback at %s\n", __func__);
+      return -1;
+    }
+
+    if (cdroid_view_add_view (&content, &bt) != 0)
+    {
+      LOGE ("Failed to add button in linearlayout at %s\n", __func__);
+      return -1;
+    }
   }
 
   /** defines activity content */

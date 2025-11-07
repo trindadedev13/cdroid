@@ -14,14 +14,14 @@ enum cdroid_view_type
 {
   VIEW,
   VIEW_TEXT,
-  VIEW_LINEARLAYOUT
+  VIEW_LINEARLAYOUT,
+  VIEW_BUTTON
 };
 
 struct cdroid_view
 {
   enum cdroid_view_type type;
 
-  j_class clazz;
   j_object instance;
 
   void *__special__;

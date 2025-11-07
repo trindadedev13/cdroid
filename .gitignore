@@ -1,3 +1,5 @@
 build/
 .gradle/
 .androidide/
+.cache/
+generate_compile_cmds.sh

@@ -11,11 +11,10 @@ CDROID_HEADER_BEGIN
 
 struct cdroid_activity
 {
-  j_class clazz;
   j_object instance;
 };
 
-i8 cdroid_activity_new (struct cdroid_activity *, j_class, j_object);
+i8 cdroid_activity_new (struct cdroid_activity *, j_object);
 i8 cdroid_activity_delete (struct cdroid_activity *);
 i8 cdroid_activity_is_valid (struct cdroid_activity *);
 

@@ -3,6 +3,29 @@
 #include "cdroid/internal/state.h"
 #include "cdroid/internal/viewhelper.h"
 #include "cdroid/log.h"
+#include <sys/cdefs.h>
+
+static i8
+__cdroid_get_view_clazz__ (struct cdroid_view *self, j_class *dest)
+{
+  j_class clazz;
+  switch (self->type)
+  {
+  case VIEW_LINEARLAYOUT:
+    clazz = __state__.__linearlayout_clazz__;
+    break;
+  case VIEW_TEXT:
+    clazz = __state__.__textview_clazz__;
+    break;
+  case VIEW_BUTTON:
+    clazz = __state__.__button_clazz__;
+    break;
+  default:
+    return -1;
+  };
+  *dest = clazz;
+  return 0;
+}
 
 /**
  * Returns the string value of type enum
@@ -14,10 +37,10 @@ cdroid_view_type_tostr (enum cdroid_view_type type)
   {
   case VIEW:
     return "View";
-  case VIEW_TEXT:
-    return "TextView";
   case VIEW_LINEARLAYOUT:
     return "LinearLayout";
+  case VIEW_TEXT:
+    return "TextView";
   default:
     return "Unknown View";
   };
@@ -68,8 +91,9 @@ cdroid_view_is_viewgroup (struct cdroid_view *self)
 i8
 cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
 {
-  j_env *env = NULL;
   j_method_id m_id;
+  j_class clazz;
+  j_env *env = NULL;
 
   if (cdroid_view_is_viewgroup (self) != 0)
   {
@@ -83,9 +107,15 @@ cdroid_view_add_view (struct cdroid_view *self, struct cdroid_view *child)
     return -1;
   }
 
+  if (__cdroid_get_view_clazz__ (self, &clazz) != 0)
+  {
+    LOGE ("Failed to get valid clazz for view: %s at %s\n",
+          cdroid_view_type_tostr (self->type), __func__);
+    return -1;
+  }
+
   /** get android.view.View#addView(android.view.View) */
-  m_id = j_env_get_method_id (env, self->clazz, "addView",
-                              "(Landroid/view/View;)V");
+  m_id = j_env_get_method_id (env, clazz, "addView", "(Landroid/view/View;)V");
   if (!m_id)
   {
     LOGE ("Failed to get addView(android/view/View) method id.\n");
@@ -119,6 +149,7 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
   struct __cdroid_callback_node__ *node;
   j_object j_listener;
   j_method_id m_id;
+  j_class clazz;
 
   j_env *env = NULL;
   if (__cdroid_state_get_env__ ((void **)&env) != 0)
@@ -135,11 +166,18 @@ cdroid_view_set_click_listener (struct cdroid_view *self,
     return -1;
   }
 
+  if (__cdroid_get_view_clazz__ (self, &clazz) != 0)
+  {
+    LOGE ("Failed to get valid clazz for view: %s at %s\n",
+          cdroid_view_type_tostr (self->type), __func__);
+    return -1;
+  }
+
   /** now we call View#setOnClickListener */
 
   /** get
    * android.view.View#setOnClickListener(android.view.View$OnClickListener) */
-  m_id = j_env_get_method_id (env, self->clazz, "setOnClickListener",
+  m_id = j_env_get_method_id (env, clazz, "setOnClickListener",
                               "(Landroid/view/View$OnClickListener;)V");
   if (!m_id)
   {

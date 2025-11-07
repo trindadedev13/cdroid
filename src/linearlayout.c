@@ -6,6 +6,24 @@
 #include "cdroid/internal/types.h"
 #include "cdroid/log.h"
 
+static i8
+__cdroid_check_clazz__ (j_env *env)
+{
+  if (!__state__.__linearlayout_clazz__)
+  {
+    /** get LinearLayout class ref */
+    j_class clazz = j_env_find_class (env, "android/widget/LinearLayout");
+    if (!clazz)
+    {
+      LOGE ("Failed to get LinearLayout Class at %s\n", __func__);
+      return -1;
+    }
+    __state__.__linearlayout_clazz__ = j_env_new_global_ref (env, clazz);
+    j_env_delete_local_ref (env, clazz);
+  }
+  return 0;
+}
+
 /**
  * Creates a new linearlayout instance
  *
@@ -15,7 +33,6 @@
 i8
 cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
 {
-  j_class clazz;
   j_method_id con;
   j_object ins;
   j_env *env = NULL;
@@ -25,16 +42,11 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
     return -1;
   }
 
-  /** get linearlayout class ref */
-  clazz = j_env_find_class (env, "android/widget/LinearLayout");
-  if (!clazz)
-  {
-    LOGE ("Failed to get LinearLayout Class at %s\n", __func__);
-    return -1;
-  }
+  if (__cdroid_check_clazz__ (env) != 0)
+    return 0;
 
   /** call linearlayout class constructor */
-  con = j_env_get_method_id (env, clazz, "<init>",
+  con = j_env_get_method_id (env, __state__.__linearlayout_clazz__, "<init>",
                              "(Landroid/content/Context;)V");
   if (!con)
   {
@@ -44,7 +56,8 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
     return -1;
   }
 
-  ins = j_env_new_object (env, clazz, con, act->instance);
+  ins = j_env_new_object (env, __state__.__linearlayout_clazz__, con,
+                          act->instance);
   if (!ins)
   {
     LOGE ("Failed to instanciate LinearLayout at %s\n", __func__);
@@ -52,7 +65,6 @@ cdroid_linearlayout_new (struct cdroid_view *dest, struct cdroid_activity *act)
   }
 
   dest->type = VIEW_LINEARLAYOUT;
-  dest->clazz = clazz;
   dest->instance = j_env_new_global_ref (env, ins);
   j_env_delete_local_ref (env, ins);
   dest->__special__ = NULL;
@@ -77,7 +89,8 @@ cdroid_linearlayout_set_orientation (struct cdroid_view *self, i8 orientation)
   }
 
   /** get android.widget.LinearLayout#setOrientation(int) */
-  m_id = j_env_get_method_id (env, self->clazz, "setOrientation", "(I)V");
+  m_id = j_env_get_method_id (env, __state__.__linearlayout_clazz__,
+                              "setOrientation", "(I)V");
   if (!m_id)
   {
     LOGE ("Failed to get setOrientation(int) method id.\n");
@@ -110,7 +123,8 @@ cdroid_linearlayout_set_gravity (struct cdroid_view *self, i32 gravity)
   }
 
   /** get android.widget.LinearLayout#setGravity(int) */
-  m_id = j_env_get_method_id (env, self->clazz, "setGravity", "(I)V");
+  m_id = j_env_get_method_id (env, __state__.__linearlayout_clazz__,
+                              "setGravity", "(I)V");
   if (!m_id)
   {
     LOGE ("Failed to get setGravity(int) method id.\n");

@@ -14,8 +14,12 @@ struct __cdroid_state__
   j_vm *jvm;
 
   j_class __ptr_clazz__;
+  j_class __activity_clazz__;
   j_class __toast_clazz__;
   j_class __viewhelper_clazz__;
+  j_class __linearlayout_clazz__;
+  j_class __textview_clazz__;
+  j_class __button_clazz__;
 };
 
 extern struct __cdroid_state__ __state__;
